@@ -1,0 +1,5 @@
+This is a test file for the embedding service.
+It contains multiple sentences to test the chunking functionality.
+The service should process this text and generate embeddings.
+Each sentence will be processed and converted into a vector representation.
+This helps in understanding how the text is being processed and embedded. 

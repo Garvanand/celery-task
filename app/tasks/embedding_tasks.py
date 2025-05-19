@@ -4,6 +4,7 @@ from ..services.embedding_service import EmbeddingService
 from typing import Dict, List, Any
 import tempfile
 import os
+import numpy as np
 
 @celery_app.task(name="process_file_and_generate_embeddings")
 def process_file_and_generate_embeddings(file_content: bytes, filename: str) -> Dict[str, Any]:
@@ -22,11 +23,14 @@ def process_file_and_generate_embeddings(file_content: bytes, filename: str) -> 
         chunks = file_processor.chunk_text(text)
         embeddings = embedding_service.generate_embeddings(chunks)
         
+        # Convert NumPy arrays to lists for JSON serialization
+        embeddings_list = embeddings.tolist()
+        
         return {
             "status": "success",
             "filename": filename,
             "chunks": chunks,
-            "embeddings": embeddings,
+            "embeddings": embeddings_list,
             "num_chunks": len(chunks)
         }
         

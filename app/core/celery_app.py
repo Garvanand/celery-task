@@ -5,6 +5,7 @@ celery_app = Celery(
     "worker",
     broker=settings.CELERY_BROKER_URL,
     backend=settings.CELERY_RESULT_BACKEND,
+    include=['app.tasks.embedding_tasks']
 )
 
 celery_app.conf.update(
@@ -21,4 +22,7 @@ celery_app.conf.update(
     task_routes={
         'app.tasks.*': {'queue': 'embedding_queue'}
     }
-) 
+)
+
+# Auto-discover tasks
+celery_app.autodiscover_tasks(['app.tasks']) 
